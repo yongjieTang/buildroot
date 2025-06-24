@@ -6,9 +6,11 @@
 # some enhancements since the commands on Mac are slightly different than on
 # Linux.
 
-import("//build/config/ios/ios_sdk.gni")
 import("//build/config/mac/mac_sdk.gni")
-import("//build/config/tvos/tvos_sdk.gni")
+if (!is_android) {
+  import("//build/config/ios/ios_sdk.gni")
+  import("//build/config/tvos/tvos_sdk.gni")
+}
 import("../goma.gni")
 
 assert(host_os == "mac")
@@ -384,72 +386,75 @@ if (!use_xcode) {
   cxx_exec = exec_script(find_xcode_executable, ["clang++"], "trim string")
 }
 
-# Toolchain used for iOS device targets.
-mac_toolchain("ios_clang_arm") {
-  toolchain_cpu = "arm"
-  toolchain_os = "mac"
+if (!is_android) {
 
-  ar = ar_exec
-  cc = cc_exec
-  cxx = cxx_exec
+  # Toolchain used for iOS device targets.
+  mac_toolchain("ios_clang_arm") {
+    toolchain_cpu = "arm"
+    toolchain_os = "mac"
 
-  ld = cxx
-  is_clang = true
-  sysroot_flags = "-isysroot $ios_device_sdk_path -miphoneos-version-min=$ios_deployment_target"
+    ar = ar_exec
+    cc = cc_exec
+    cxx = cxx_exec
 
-  target_environment = "device"
-  deployment_target = ios_deployment_target
-}
+    ld = cxx
+    is_clang = true
+    sysroot_flags = "-isysroot $ios_device_sdk_path -miphoneos-version-min=$ios_deployment_target"
 
-# Toolchain used for iOS simulator targets.
-mac_toolchain("ios_clang_x64") {
-  toolchain_cpu = "x64"
-  toolchain_os = "mac"
+    target_environment = "device"
+    deployment_target = ios_deployment_target
+  }
 
-  ar = ar_exec
-  cc = cc_exec
-  cxx = cxx_exec
+  # Toolchain used for iOS simulator targets.
+  mac_toolchain("ios_clang_x64") {
+    toolchain_cpu = "x64"
+    toolchain_os = "mac"
 
-  ld = cxx
-  is_clang = true
-  sysroot_flags = "-isysroot $ios_simulator_sdk_path -mios-simulator-version-min=$ios_deployment_target"
+    ar = ar_exec
+    cc = cc_exec
+    cxx = cxx_exec
 
-  target_environment = "simulator"
-  deployment_target = ios_deployment_target
-}
+    ld = cxx
+    is_clang = true
+    sysroot_flags = "-isysroot $ios_simulator_sdk_path -mios-simulator-version-min=$ios_deployment_target"
 
-# Toolchain used for tvOS device targets.
-mac_toolchain("tvos_clang_arm") {
-  toolchain_cpu = "arm"
-  toolchain_os = "mac"
+    target_environment = "simulator"
+    deployment_target = ios_deployment_target
+  }
 
-  ar = ar_exec
-  cc = cc_exec
-  cxx = cxx_exec
+  # Toolchain used for tvOS device targets.
+  mac_toolchain("tvos_clang_arm") {
+    toolchain_cpu = "arm"
+    toolchain_os = "mac"
 
-  ld = cxx
-  is_clang = true
-  sysroot_flags = "-isysroot $tvos_device_sdk_path -mtvos-version-min=$tvos_deployment_target"
+    ar = ar_exec
+    cc = cc_exec
+    cxx = cxx_exec
 
-  target_environment = "device"
-  deployment_target = tvos_deployment_target
-}
+    ld = cxx
+    is_clang = true
+    sysroot_flags = "-isysroot $tvos_device_sdk_path -mtvos-version-min=$tvos_deployment_target"
 
-# Toolchain used for tvOS simulator targets.
-mac_toolchain("tvos_clang_x64") {
-  toolchain_cpu = "x64"
-  toolchain_os = "mac"
+    target_environment = "device"
+    deployment_target = tvos_deployment_target
+  }
 
-  ar = ar_exec
-  cc = cc_exec
-  cxx = cxx_exec
+  # Toolchain used for tvOS simulator targets.
+  mac_toolchain("tvos_clang_x64") {
+    toolchain_cpu = "x64"
+    toolchain_os = "mac"
 
-  ld = cxx
-  is_clang = true
-  sysroot_flags = "-isysroot $tvos_simulator_sdk_path -mtvos-simulator-version-min=$tvos_deployment_target"
+    ar = ar_exec
+    cc = cc_exec
+    cxx = cxx_exec
 
-  target_environment = "simulator"
-  deployment_target = tvos_deployment_target
+    ld = cxx
+    is_clang = true
+    sysroot_flags = "-isysroot $tvos_simulator_sdk_path -mtvos-simulator-version-min=$tvos_deployment_target"
+
+    target_environment = "simulator"
+    deployment_target = tvos_deployment_target
+  }
 }
 
 # Toolchain used for Mac X64 host targets.
