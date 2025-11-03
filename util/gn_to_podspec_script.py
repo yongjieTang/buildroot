@@ -513,6 +513,7 @@ class Writer:
       return
     if len(target.requires_arc) == 1 and target.requires_arc[0] in ['true', 'false']:
       self.write_root_spec_normal(header, 'requires_arc', '=', target.requires_arc[0], level)
+      self.out.write('\n')
       return
     self.write_specification_list(header, target, level, "requires_arc", is_new_line)
 
