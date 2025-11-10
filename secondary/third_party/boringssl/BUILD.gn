@@ -58,7 +58,6 @@ if (is_msan) {
   # BoringSSL's GAS-compatible assembly knows how to detect MSan, but the NASM
   # assembly does not, so we check for MSan explicitly.
   source_set("boringssl_asm") {
-    visibility = [ ":*" ]
     public_configs = [ ":no_asm_config" ]
   }
   source_set("test_support_asm") {
@@ -69,7 +68,6 @@ if (is_msan) {
   # Windows' x86 and x86_64 assembly is built with NASM.
   import("//third_party/nasm/nasm_assemble.gni")
   nasm_assemble("boringssl_asm") {
-    visibility = [ ":*" ]
     sources = rebase_path(bcm_sources_nasm + crypto_sources_nasm, "//third_party/boringssl", "//third_party/boringssl/src")
   }
   nasm_assemble("test_support_asm") {
@@ -81,7 +79,6 @@ if (is_msan) {
   # are all wrapped in processor checks for the corresponding target, so there
   # is no need to add target conditions in the build.
   source_set("boringssl_asm") {
-    visibility = [ ":*" ]
     sources = rebase_path(bcm_sources_asm + crypto_sources_asm, "//third_party/boringssl", "//third_party/boringssl/src")
     include_dirs = [ "//third_party/boringssl/src/include" ]
   }
@@ -95,7 +92,6 @@ if (is_msan) {
 component("boringssl") {
   sources = rebase_path(all_sources, "//third_party/boringssl", "//third_party/boringssl/src")
   public = rebase_path(all_headers, "//third_party/boringssl", "//third_party/boringssl/src")
-  friend = [ ":*" ]
   deps = [ "//third_party/boringssl/src/third_party/fiat:fiat_license" ]
 
   # Mark boringssl_asm as a public dependency so the OPENSSL_NO_ASM
