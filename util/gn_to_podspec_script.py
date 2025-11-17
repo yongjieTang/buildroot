@@ -240,7 +240,7 @@ class SubspecTarget:
     private_paths = set()
     private_headers = []
     for source in sources:
-      if not (source.endswith('.h') or source.endswith('.hpp')):
+      if not (source.endswith('.h') or source.endswith('.hpp') or source.endswith('.inc') or source.endswith('.inl')):
         continue
       if source in public_headers:
         continue
