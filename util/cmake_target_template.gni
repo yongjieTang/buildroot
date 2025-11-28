@@ -98,6 +98,10 @@ template("cmake_target") {
   }
 
   file_name_ = "CMakeLists.txt"
+  is_only_sub_cmake_ = "false"
+  if (defined(invoker.is_only_sub_cmake) && invoker.is_only_sub_cmake) {
+    is_only_sub_cmake_ = "true"
+  }
   if (defined(invoker.file_name)) {
     file_name_ = invoker.file_name
   }
@@ -232,6 +236,7 @@ template("cmake_target") {
       file_name = [ file_name_ ]
       project_name = [ project_name_ ]
       is_cmake_target = [ "true" ]
+      is_only_sub_cmake = [ is_only_sub_cmake_ ]
       cmake_version = [ cmake_version_ ]
       output_path = [ output_path_ ]
       sub_cmake_target = sub_cmake_target_
